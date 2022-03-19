@@ -85,6 +85,11 @@ loop:
 					b.rotate()
 				}
 			}
+		default:
+			drawBoard()
+			termbox.Flush()
+			time.Sleep(1 * time.Second)
+
 		}
 	}
 }
