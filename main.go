@@ -44,22 +44,6 @@ func drawBlock(x, y int, color termbox.Attribute) {
 	}
 }
 
-func moveToLeft() {
-
-}
-
-func moveToRight() {
-
-}
-
-func moveToDown() {
-
-}
-
-func changeFigure() {
-
-}
-
 func main() {
 	err := termbox.Init()
 	if err != nil {
@@ -78,11 +62,13 @@ func main() {
 		}
 	}()
 
+	var b *block
 loop:
 	for {
-		drawBoard()
-		termbox.Flush()
-
+		if existBlock == 0 {
+			b = NewBlock()
+			existBlock = 1
+		}
 		select {
 		case ev := <-eventQueue:
 			if ev.Type == termbox.EventKey {
@@ -90,13 +76,13 @@ loop:
 				case termbox.KeyCtrlX:
 					break loop
 				case termbox.KeyArrowLeft:
-					moveToLeft()
+					b.moveToLeft()
 				case termbox.KeyArrowRight:
-					moveToRight()
+					b.moveToRight()
 				case termbox.KeyArrowDown:
-					moveToDown()
+					b.moveToDown()
 				case termbox.KeyArrowUp:
-					changeFigure()
+					b.rotate()
 				}
 			}
 		}
