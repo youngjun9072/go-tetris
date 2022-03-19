@@ -99,9 +99,6 @@ loop:
 					changeFigure()
 				}
 			}
-			if ev.Type == termbox.EventKey && ev.Key == termbox.KeyCtrlX {
-				break loop
-			}
 		}
 	}
 }
