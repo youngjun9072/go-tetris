@@ -55,19 +55,23 @@ func main() {
 
 	initBoard()
 
+	eventQueue := make(chan termbox.Event)
+	go func() {
+		for {
+			eventQueue <- termbox.PollEvent()
+		}
+	}()
+
 loop:
 	for {
 		drawBoard()
 		termbox.Flush()
 
-		switch ev := termbox.PollEvent(); ev.Type {
-		case termbox.EventKey:
-			if ev.Key == termbox.KeyCtrlX {
+		select {
+		case ev := <-eventQueue:
+			if ev.Type == termbox.EventKey && ev.Key == termbox.KeyCtrlX {
 				break loop
 			}
-		case termbox.EventError:
-			panic(ev.Err)
 		}
 	}
-
 }
