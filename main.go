@@ -2,6 +2,8 @@ package main
 
 import (
 	termbox "github.com/nsf/termbox-go"
+	"go-tetris/block"
+	"time"
 )
 
 const boardFillColor = termbox.ColorBlack
@@ -11,6 +13,8 @@ const boardWidth = 12
 const boardHeight = 20
 
 var board [boardHeight][boardWidth]int
+
+var existBlock = 0
 
 func initBoard() {
 	for y := 0; y < boardHeight; y++ {
@@ -24,11 +28,13 @@ func initBoard() {
 	}
 }
 
-func drawBoard() {
+func drawBoard(b *block.Block) {
 	for y := 0; y < boardHeight; y++ {
 		for x := 0; x < boardWidth; x++ {
 			if board[y][x] == 1 {
 				drawBlock(x*4, y*2, boardLineColor)
+			} else if board[y][x] == -1 {
+				drawBlock(x*4, y*2, termbox.ColorYellow)
 			} else {
 				drawBlock(x*4, y*2, boardFillColor)
 			}
@@ -62,11 +68,11 @@ func main() {
 		}
 	}()
 
-	var b *block
+	var b *block.Block
 loop:
 	for {
 		if existBlock == 0 {
-			b = NewBlock()
+			b = block.NewBlock()
 			existBlock = 1
 		}
 		select {
@@ -76,17 +82,17 @@ loop:
 				case termbox.KeyCtrlX:
 					break loop
 				case termbox.KeyArrowLeft:
-					b.moveToLeft()
+					b.MoveToLeft()
 				case termbox.KeyArrowRight:
-					b.moveToRight()
+					b.MoveToRight()
 				case termbox.KeyArrowDown:
-					b.moveToDown()
+					b.MoveToDown()
 				case termbox.KeyArrowUp:
-					b.rotate()
+					b.Rotate()
 				}
 			}
 		default:
-			drawBoard()
+			drawBoard(b)
 			termbox.Flush()
 			time.Sleep(1 * time.Second)
 
