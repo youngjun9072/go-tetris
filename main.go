@@ -29,6 +29,14 @@ func initBoard() {
 }
 
 func drawBoard(b *block.Block) {
+	for y := 0; y < 4; y++ {
+		for x := 0; x < 4; x++ {
+			if b.Piece[0][y][x] == -1 {
+				board[y+b.Y][x+b.X] = b.Piece[0][y][x]
+			}
+		}
+	}
+
 	for y := 0; y < boardHeight; y++ {
 		for x := 0; x < boardWidth; x++ {
 			if board[y][x] == 1 {
@@ -60,6 +68,7 @@ func main() {
 	termbox.Flush()
 
 	initBoard()
+	block.InitBlock()
 
 	eventQueue := make(chan termbox.Event)
 	go func() {
@@ -92,9 +101,10 @@ loop:
 				}
 			}
 		default:
+			initBoard()
 			drawBoard(b)
 			termbox.Flush()
-			time.Sleep(1 * time.Second)
+			time.Sleep(10 * time.Nanosecond)
 
 		}
 	}
