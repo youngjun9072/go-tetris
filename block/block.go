@@ -10,10 +10,11 @@ const pieceWidth = 4
 const pieceHeight = 4
 
 type Block struct {
-	X     int
-	Y     int
-	Rot   int
-	Piece [numOfRotate][pieceWidth][pieceHeight]int
+	X           int
+	Y           int
+	Rot         int
+	NumOfRotate int
+	Piece       [numOfRotate][pieceWidth][pieceHeight]int
 }
 
 // ㅁ, ㅣ, ㄹ, ㅗ, ㄴ
@@ -27,19 +28,9 @@ func InitBlock() {
 			{0, 0, 0, 0},
 			{0, 0, -1, -1},
 			{0, 0, -1, -1}},
-		{{0, 0, 0, 0},
-			{0, 0, 0, 0},
-			{0, 0, -1, -1},
-			{0, 0, -1, -1}},
-		{{0, 0, 0, 0},
-			{0, 0, 0, 0},
-			{0, 0, -1, -1},
-			{0, 0, -1, -1}},
-		{{0, 0, 0, 0},
-			{0, 0, 0, 0},
-			{0, 0, -1, -1},
-			{0, 0, -1, -1}},
 	}
+	blocks[0].NumOfRotate = 1
+
 	blocks[1].Piece = [4][4][4]int{
 		{{0, 0, -1, 0},
 			{0, 0, -1, 0},
@@ -50,6 +41,8 @@ func InitBlock() {
 			{-1, -1, -1, -1},
 			{0, 0, 0, 0}},
 	}
+	blocks[1].NumOfRotate = 2
+
 	blocks[2].Piece = [4][4][4]int{
 		{{0, 0, 0, 0},
 			{0, 0, 0, 0},
@@ -68,6 +61,8 @@ func InitBlock() {
 			{0, 0, -1, 0},
 			{0, 0, -1, 0}},
 	}
+	blocks[2].NumOfRotate = 4
+
 	blocks[3].Piece = [4][4][4]int{
 		{{0, 0, 0, 0},
 			{0, 0, 0, 0},
@@ -78,6 +73,8 @@ func InitBlock() {
 			{0, -1, -1, 0},
 			{0, 0, -1, 0}},
 	}
+	blocks[3].NumOfRotate = 2
+
 	blocks[4].Piece = [4][4][4]int{
 		{{0, 0, 0, 0},
 			{0, 0, 0, 0},
@@ -96,13 +93,14 @@ func InitBlock() {
 			{0, 0, -1, -1},
 			{0, 0, -1, 0}},
 	}
+	blocks[4].NumOfRotate = 4
 
 }
 func NewBlock() *Block {
 	s := rand.NewSource(time.Now().UnixNano())
 	r := rand.New(s)
 	b := blocks[r.Intn(5)]
-	b.Rot = 0
+	b.Rot = r.Intn(b.NumOfRotate)
 	b.X = 0
 	b.Y = 0
 
