@@ -20,7 +20,7 @@ func initBoard() {
 	for y := 0; y < boardHeight; y++ {
 		for x := 0; x < boardWidth; x++ {
 			if x == 0 || y == 0 || x == boardWidth-1 || y == boardHeight-1 {
-				board[y][x] = 1
+				board[y][x] = -1
 			} else {
 				board[y][x] = 0
 			}
@@ -40,12 +40,12 @@ func drawBoard(b *block.Block) {
 
 	for y := 0; y < boardHeight; y++ {
 		for x := 0; x < boardWidth; x++ {
-			if board[y][x] == 1 {
-				drawBlock(x*4, y*2, boardLineColor)
-			} else if board[y][x] == -1 {
-				drawBlock(x*4, y*2, termbox.ColorYellow)
-			} else {
+			if board[y][x] == 0 {
 				drawBlock(x*4, y*2, boardFillColor)
+			} else if board[y][x] == -1 {
+				drawBlock(x*4, y*2, boardLineColor)
+			} else {
+				drawBlock(x*4, y*2, termbox.ColorYellow)
 			}
 		}
 	}
