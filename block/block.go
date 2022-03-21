@@ -124,10 +124,9 @@ func (b *Block) MoveToDown() {
 }
 
 func (b *Block) Rotate() {
-	if b.Rot == 3 {
+	b.Rot++
+	if b.Rot == b.NumOfRotate {
 		b.Rot = 0
-	} else {
-		b.Rot++
 	}
 
 }

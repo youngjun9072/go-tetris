@@ -31,8 +31,9 @@ func initBoard() {
 func drawBoard(b *block.Block) {
 	for y := 0; y < 4; y++ {
 		for x := 0; x < 4; x++ {
-			if b.Piece[b.NumOfRotate-1][y][x] == -1 {
-				board[y+b.Y][x+b.X] = b.Piece[b.NumOfRotate-1][y][x]
+			board[y+b.Y][x+b.X] = 0
+			if b.Piece[b.Rot][y][x] == -1 {
+				board[y+b.Y][x+b.X] = b.Piece[b.Rot][y][x]
 			}
 		}
 	}
