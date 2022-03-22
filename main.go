@@ -32,8 +32,9 @@ func drawBoard(b *block.Block) {
 	for y := 0; y < 4; y++ {
 		for x := 0; x < 4; x++ {
 			board[y+b.Y][x+b.X] = 0
-			if b.Piece[b.Rot][y][x] == -1 {
+			if b.Piece[b.Rot][y][x] != 0 {
 				board[y+b.Y][x+b.X] = b.Piece[b.Rot][y][x]
+			} else if b.Piece[b.Rot][y][x] == 0 && board[y+b.Y][x+b.X] != 0 {
 			}
 		}
 	}
@@ -45,7 +46,7 @@ func drawBoard(b *block.Block) {
 			} else if board[y][x] == -1 {
 				drawBlock(x*4, y*2, boardLineColor)
 			} else {
-				drawBlock(x*4, y*2, termbox.ColorYellow)
+				drawBlock(x*4, y*2, b.Color)
 			}
 		}
 	}
@@ -105,7 +106,7 @@ loop:
 			initBoard()
 			drawBoard(b)
 			termbox.Flush()
-			time.Sleep(10 * time.Nanosecond)
+			time.Sleep(100 * time.Nanosecond)
 
 		}
 	}
