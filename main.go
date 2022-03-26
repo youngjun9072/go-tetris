@@ -15,6 +15,8 @@ const boardHeight = 20
 
 var board [boardHeight][boardWidth]int
 
+var colorMap map[int]termbox.Attribute
+
 func initBoard() {
 	for y := 0; y < boardHeight; y++ {
 		for x := 0; x < boardWidth; x++ {
@@ -25,6 +27,15 @@ func initBoard() {
 			}
 		}
 	}
+
+	colorMap = make(map[int]termbox.Attribute)
+	colorMap[-1] = termbox.ColorWhite
+	colorMap[0] = termbox.ColorBlack
+	colorMap[1] = termbox.ColorBlue
+	colorMap[2] = termbox.ColorYellow
+	colorMap[3] = termbox.ColorCyan
+	colorMap[4] = termbox.ColorLightMagenta
+	colorMap[5] = termbox.ColorDarkGray
 }
 
 func drawBoard(b *block.Block) {
