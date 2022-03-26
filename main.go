@@ -38,34 +38,69 @@ func initBoard() {
 	colorMap[5] = termbox.ColorDarkGray
 }
 
-func drawBoard(b *block.Block) {
-	for y := 0; y < 4; y++ {
-		for x := 0; x < 4; x++ {
-			board[y+b.Y][x+b.X] = 0
+func drawBoard() {
+	for y := 0; y < boardHeight; y++ {
+		for x := 0; x < boardWidth; x++ {
+			utils.DrawBlock(x*4, y*2, colorMap[board[y][x]])
+		}
+	}
+}
+
+func checkRightCollid(b *block.Block) bool {
+	for x := 3; x >= 0; x-- {
+		for y := 0; y < 4; y++ {
 			if b.Piece[b.Rot][y][x] != 0 {
-				board[y+b.Y][x+b.X] = b.Piece[b.Rot][y][x]
-			} else if b.Piece[b.Rot][y][x] == 0 && board[y+b.Y][x+b.X] != 0 {
+				if board[b.Y+y][b.X+x+1] != 0 {
+					return true
+				}
 			}
 		}
 	}
+	return false
+}
 
-	for y := 0; y < boardHeight; y++ {
-		for x := 0; x < boardWidth; x++ {
-			if board[y][x] == 0 {
-				drawBlock(x*4, y*2, boardFillColor)
-			} else if board[y][x] == -1 {
-				drawBlock(x*4, y*2, boardLineColor)
-			} else {
-				drawBlock(x*4, y*2, b.Color)
+func checkLeftCollid(b *block.Block) bool {
+	for x := 0; x < 4; x++ {
+		for y := 0; y < 4; y++ {
+			if b.Piece[b.Rot][y][x] != 0 {
+				if board[b.Y+y][b.X+x-1] != 0 {
+					return true
+				}
+			}
+		}
+	}
+	return false
+}
+
+func checkDownCollid(b *block.Block) bool {
+	for x := 3; x >= 0; x-- {
+		for y := 0; y < 4; y++ {
+			if b.Piece[b.Rot][y][x] != 0 {
+				if board[b.Y+y+1][b.X+x] != 0 {
+					return true
+				}
+			}
+		}
+	}
+	return false
+}
+
+func putOn(b *block.Block) {
+	for x := 0; x < 4; x++ {
+		for y := 0; y < 4; y++ {
+			if b.Piece[b.Rot][y][x] != 0 {
+				board[b.Y+y][b.X+x] = b.Piece[b.Rot][y][x]
 			}
 		}
 	}
 }
 
-func drawBlock(x, y int, color termbox.Attribute) {
-	for i := x; i < x+4; i++ {
-		for j := y; j < y+2; j++ {
-			termbox.SetCell(i, j, ' ', color, color)
+func erase(b *block.Block) {
+	for x := 0; x < 4; x++ {
+		for y := 0; y < 4; y++ {
+			if b.Piece[b.Rot][y][x] != 0 {
+				board[b.Y+y][b.X+x] = 0
+			}
 		}
 	}
 }
@@ -90,11 +125,28 @@ func main() {
 	}()
 
 	var b *block.Block
+
+	go func() {
+		for {
+			time.Sleep(500 * time.Millisecond)
+			if b != nil {
+				erase(b)
+				collid := checkDownCollid(b)
+				if !collid {
+					b.MoveToDown()
+				}
+				putOn(b)
+				if collid {
+					b = nil
+				}
+			}
+		}
+	}()
 loop:
 	for {
-		if existBlock == 0 {
+		if b == nil {
 			b = block.NewBlock()
-			existBlock = 1
+			putOn(b)
 		}
 		select {
 		case ev := <-eventQueue:
@@ -103,20 +155,33 @@ loop:
 				case termbox.KeyCtrlX:
 					break loop
 				case termbox.KeyArrowLeft:
-					b.MoveToLeft()
+					erase(b)
+					if !checkLeftCollid(b) {
+						b.MoveToLeft()
+					}
+					putOn(b)
 				case termbox.KeyArrowRight:
-					b.MoveToRight()
+					erase(b)
+					if !checkRightCollid(b) {
+						b.MoveToRight()
+					}
+					putOn(b)
 				case termbox.KeyArrowDown:
-					b.MoveToDown()
+					erase(b)
+					if !checkDownCollid(b) {
+						b.MoveToDown()
+					}
+					putOn(b)
 				case termbox.KeyArrowUp:
+					erase(b)
 					b.Rotate()
+					putOn(b)
 				}
 			}
 		default:
-			initBoard()
-			drawBoard(b)
+			drawBoard()
 			termbox.Flush()
-			time.Sleep(100 * time.Nanosecond)
+			time.Sleep(100 * time.Millisecond)
 
 		}
 	}
