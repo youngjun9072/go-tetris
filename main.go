@@ -15,8 +15,6 @@ const boardHeight = 20
 
 var board [boardHeight][boardWidth]int
 
-var existBlock = 0
-
 func initBoard() {
 	for y := 0; y < boardHeight; y++ {
 		for x := 0; x < boardWidth; x++ {
