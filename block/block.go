@@ -108,7 +108,7 @@ func NewBlock() *Block {
 	r := rand.New(s)
 	b := blocks[r.Intn(5)]
 	b.Rot = r.Intn(b.NumOfRotate)
-	b.X = 8 / 2
+	b.X = 10 / 2
 	b.Y = 1
 
 	return &b
