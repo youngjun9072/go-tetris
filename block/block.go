@@ -132,10 +132,14 @@ func (b *Block) MoveToDown() {
 	}
 }
 
-func (b *Block) Rotate() {
-	b.Rot++
-	if b.Rot == b.NumOfRotate {
+func (b *Block) Rotate(idx int) {
+	b.Rot = b.Rot + idx
+	if b.Rot >= b.NumOfRotate {
 		b.Rot = 0
+	}
+
+	if b.Rot == -1 {
+		b.Rot = b.NumOfRotate - 1
 	}
 
 }

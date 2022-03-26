@@ -105,6 +105,19 @@ func erase(b *block.Block) {
 	}
 }
 
+func isRotatable(b *block.Block) bool {
+	b.Rotate(1)
+	for x := 0; x < 4; x++ {
+		for y := 0; y < 4; y++ {
+			if b.X+x > 11 || board[b.Y+y][b.X+x] != 0 && b.Piece[b.Rot][y][x] != 0 {
+				b.Rotate(-1)
+				return false
+			}
+		}
+	}
+	return true
+}
+
 func main() {
 	err := termbox.Init()
 	if err != nil {
@@ -174,7 +187,9 @@ loop:
 					putOn(b)
 				case termbox.KeyArrowUp:
 					erase(b)
-					b.Rotate()
+					if !isRotatable(b) {
+
+					}
 					putOn(b)
 				}
 			}
