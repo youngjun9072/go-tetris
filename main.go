@@ -141,7 +141,7 @@ func main() {
 
 	go func() {
 		for {
-			time.Sleep(500 * time.Millisecond)
+			time.Sleep(300 * time.Millisecond)
 			if b != nil {
 				erase(b)
 				collid := checkDownCollid(b)
