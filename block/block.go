@@ -121,13 +121,15 @@ func (b *Block) MoveToLeft() {
 }
 
 func (b *Block) MoveToRight() {
-	if b.X < 14-4 {
+	if b.X < 12 {
 		b.X++
 	}
 }
 
 func (b *Block) MoveToDown() {
-	b.Y++
+	if b.Y < 19 {
+		b.Y++
+	}
 }
 
 func (b *Block) Rotate() {
