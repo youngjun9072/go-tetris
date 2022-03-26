@@ -9,7 +9,7 @@ import (
 const boardFillColor = termbox.ColorBlack
 const boardLineColor = termbox.ColorWhite
 
-const boardWidth = 12
+const boardWidth = 13
 const boardHeight = 20
 
 var board [boardHeight][boardWidth]int
