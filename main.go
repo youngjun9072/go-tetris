@@ -3,6 +3,7 @@ package main
 import (
 	termbox "github.com/nsf/termbox-go"
 	"go-tetris/block"
+	"go-tetris/utils"
 	"time"
 )
 
