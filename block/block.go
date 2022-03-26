@@ -7,8 +7,8 @@ import (
 )
 
 const numOfRotate = 4
-const pieceWidth = 4
-const pieceHeight = 4
+const PieceWidth = 4
+const PieceHeight = 4
 
 type Block struct {
 	X           int
@@ -16,7 +16,7 @@ type Block struct {
 	Rot         int
 	NumOfRotate int
 	Color       termbox.Attribute
-	Piece       [numOfRotate][pieceWidth][pieceHeight]int
+	Piece       [numOfRotate][PieceWidth][PieceHeight]int
 }
 
 // ㅁ, ㅣ, ㄹ, ㅗ, ㄴ
@@ -88,7 +88,7 @@ func InitBlock() {
 			{0, 0, 0, 0}},
 		{{0, 5, 0, 0},
 			{5, 5, 0, 0},
-			{5, 0, 0, 0},
+			{0, 5, 0, 0},
 			{0, 0, 0, 0}},
 		{{5, 5, 5, 0},
 			{0, 5, 0, 0},
