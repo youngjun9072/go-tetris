@@ -1,0 +1,8 @@
+# github.com/jinzhu/copier v0.3.5
+## explicit
+github.com/jinzhu/copier
+# github.com/mattn/go-runewidth v0.0.9
+github.com/mattn/go-runewidth
+# github.com/nsf/termbox-go v1.1.1
+## explicit
+github.com/nsf/termbox-go
