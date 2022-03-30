@@ -118,6 +118,36 @@ func isRotatable(b *block.Block) bool {
 	return true
 }
 
+func removeBlock(start int) {
+	for y := start; y > 1; y-- {
+		for x := 1; x < boardWidth; x++ {
+			board[y][x] = board[y-1][x]
+		}
+	}
+}
+
+func removeBlocks() {
+	y := boardHeight - 2
+	for {
+		check := true
+
+		if y == 1 {
+			break
+		}
+		for x := 1; x < boardWidth; x++ {
+			if board[y][x] == 0 {
+				check = false
+			}
+		}
+
+		if check {
+			removeBlock(y)
+		} else {
+			y--
+		}
+	}
+}
+
 func main() {
 	err := termbox.Init()
 	if err != nil {
@@ -151,6 +181,7 @@ func main() {
 				putOn(b)
 				if collid {
 					b = nil
+					removeBlocks()
 				}
 			}
 		}
@@ -181,10 +212,15 @@ loop:
 					putOn(b)
 				case termbox.KeyArrowDown:
 					erase(b)
-					if !checkDownCollid(b) {
+					collid := checkDownCollid(b)
+					if !collid {
 						b.MoveToDown()
 					}
 					putOn(b)
+					if collid {
+						removeBlocks()
+						b = nil
+					}
 				case termbox.KeyArrowUp:
 					erase(b)
 					if !isRotatable(b) {
@@ -196,7 +232,8 @@ loop:
 		default:
 			drawBoard()
 			termbox.Flush()
-			time.Sleep(100 * time.Millisecond)
+
+			time.Sleep(50 * time.Millisecond)
 
 		}
 	}
