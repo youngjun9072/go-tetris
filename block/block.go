@@ -24,7 +24,7 @@ const numOfBlock = 5
 
 var blocks [numOfBlock]Block
 
-func InitBlock() {
+func Init() {
 	blocks[0].Piece = [4][4][4]int{
 		{{1, 1, 0, 0},
 			{1, 1, 0, 0},
