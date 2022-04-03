@@ -186,6 +186,8 @@ func main() {
 			}
 		}
 	}()
+
+	ignore := false
 loop:
 	for {
 		if b == nil {
@@ -199,18 +201,27 @@ loop:
 				case termbox.KeyCtrlX:
 					break loop
 				case termbox.KeyArrowLeft:
+					if ignore {
+						break
+					}
 					erase(b)
 					if !checkLeftCollid(b) {
 						b.MoveToLeft()
 					}
 					putOn(b)
 				case termbox.KeyArrowRight:
+					if ignore {
+						break
+					}
 					erase(b)
 					if !checkRightCollid(b) {
 						b.MoveToRight()
 					}
 					putOn(b)
 				case termbox.KeyArrowDown:
+					if ignore {
+						break
+					}
 					erase(b)
 					collid := checkDownCollid(b)
 					if !collid {
@@ -227,6 +238,18 @@ loop:
 
 					}
 					putOn(b)
+				case termbox.KeySpace:
+					ignore = true
+					for {
+						erase(b)
+						if !checkDownCollid(b) {
+							b.MoveToDown()
+						} else {
+							break
+						}
+						putOn(b)
+					}
+					ignore = false
 				}
 			}
 		default:
