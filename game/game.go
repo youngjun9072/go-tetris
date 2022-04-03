@@ -145,7 +145,6 @@ func KeyHandler(ev termbox.Event, b *block.Block) bool {
 				}
 				board.PutOn(b)
 			}
-			//ignore = false
 			return true
 		}
 	}
