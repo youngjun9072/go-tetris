@@ -10,11 +10,12 @@ import (
 var StartGame bool
 var score uint
 var lvl uint
+var KeyLock bool
 
 func InitGame() {
 	score = 0
 	lvl = 0
-
+	KeyLock = true
 	board.Init()
 	block.Init()
 }
@@ -80,7 +81,6 @@ func isRotatable(b *block.Block) bool {
 }
 
 func KeyHandler(ev termbox.Event, b *block.Block) bool {
-	ignore := false
 	if ev.Type == termbox.EventKey {
 		switch ev.Key {
 		case termbox.KeyCtrlX:
@@ -93,57 +93,58 @@ func KeyHandler(ev termbox.Event, b *block.Block) bool {
 			}
 
 		case termbox.KeyArrowLeft:
-			if ignore {
-				break
+			if StartGame || !KeyLock {
+				board.Erase(b)
+				if !CheckLeftCollid(b) {
+					b.MoveToLeft()
+				}
+				board.PutOn(b)
 			}
-			board.Erase(b)
-			if !CheckLeftCollid(b) {
-				b.MoveToLeft()
-			}
-			board.PutOn(b)
 			return true
 		case termbox.KeyArrowRight:
-			if ignore {
-				break
+			if StartGame || !KeyLock {
+				board.Erase(b)
+				if !CheckRightCollid(b) {
+					b.MoveToRight()
+				}
+				board.PutOn(b)
 			}
-			board.Erase(b)
-			if !CheckRightCollid(b) {
-				b.MoveToRight()
-			}
-			board.PutOn(b)
 			return true
 		case termbox.KeyArrowDown:
-			if ignore {
-				break
-			}
-			board.Erase(b)
-			collid := CheckDownCollid(b)
-			if !collid {
-				b.MoveToDown()
-			}
-			board.PutOn(b)
-			if collid {
-				board.RemoveLines()
-				b = nil
+			if StartGame || !KeyLock {
+				board.Erase(b)
+				collid := CheckDownCollid(b)
+				if !collid {
+					b.MoveToDown()
+				}
+				board.PutOn(b)
+				if collid {
+					board.RemoveLines()
+					b = nil
+				}
 			}
 			return true
 		case termbox.KeyArrowUp:
-			board.Erase(b)
-			if !isRotatable(b) {
-
-			}
-			board.PutOn(b)
-			return true
-		case termbox.KeySpace:
-			ignore = true
-			for {
+			if StartGame || !KeyLock {
 				board.Erase(b)
-				if !CheckDownCollid(b) {
-					b.MoveToDown()
-				} else {
-					break
+				if !isRotatable(b) {
+
 				}
 				board.PutOn(b)
+			}
+			return true
+		case termbox.KeySpace:
+			if StartGame || !KeyLock {
+				KeyLock = true
+				for {
+					board.Erase(b)
+					if !CheckDownCollid(b) {
+						b.MoveToDown()
+					} else {
+						break
+					}
+					board.PutOn(b)
+				}
 			}
 			return true
 		}

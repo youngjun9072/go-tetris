@@ -65,6 +65,9 @@ loop:
 				utils.PrintString(16, 17, "End : Ctrl + x")
 			}
 			termbox.Flush()
+			if game.StartGame && game.KeyLock {
+				game.KeyLock = false
+			}
 
 			time.Sleep(50 * time.Millisecond)
 
