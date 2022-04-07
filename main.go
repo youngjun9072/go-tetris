@@ -49,6 +49,10 @@ func main() {
 loop:
 	for {
 		if game.StartGame && b == nil {
+			if game.IsEnd() {
+				game.StartGame = false
+				game.KeyLock = true
+			}
 			b = block.NewBlock()
 			board.PutOn(b)
 		}
