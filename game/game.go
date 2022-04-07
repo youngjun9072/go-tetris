@@ -80,6 +80,13 @@ func isRotatable(b *block.Block) bool {
 	return true
 }
 
+func IsEnd() bool {
+	if board.Board[1][10/2] != 0 {
+		return true
+	}
+	return false
+}
+
 func KeyHandler(ev termbox.Event, b *block.Block) bool {
 	if ev.Type == termbox.EventKey {
 		switch ev.Key {
