@@ -15,6 +15,13 @@ var ColorMap = map[int]termbox.Attribute{
 	5:  termbox.ColorDarkGray,
 }
 
+func PrintString(x, y int, str string) {
+	for _, c := range str {
+		termbox.SetCell(x, y, c, termbox.ColorWhite, termbox.ColorBlack)
+		x++
+	}
+}
+
 func DrawBlock(x, y int, color termbox.Attribute) {
 	for i := x; i < x+CellWidth; i++ {
 		for j := y; j < y+CellHeight; j++ {
