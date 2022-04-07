@@ -1,9 +1,14 @@
 package utils
 
-import "github.com/nsf/termbox-go"
+import (
+	"github.com/nsf/termbox-go"
+	"time"
+)
 
 const CellWidth = 4
 const CellHeight = 2
+
+const FlushInternal = 50 * time.Millisecond
 
 var ColorMap = map[int]termbox.Attribute{
 	-1: termbox.ColorWhite,

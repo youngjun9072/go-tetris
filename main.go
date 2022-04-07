@@ -73,7 +73,7 @@ loop:
 				game.KeyLock = false
 			}
 
-			time.Sleep(50 * time.Millisecond)
+			time.Sleep(utils.FlushInternal)
 
 		}
 	}
