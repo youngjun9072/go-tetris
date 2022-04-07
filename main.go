@@ -5,6 +5,7 @@ import (
 	"go-tetris/block"
 	"go-tetris/board"
 	"go-tetris/game"
+	"go-tetris/utils"
 	"time"
 )
 
@@ -59,6 +60,10 @@ loop:
 			}
 		default:
 			game.DrawBoard()
+			if !game.StartGame {
+				utils.PrintString(16, 15, "Start :  Ctrl + s")
+				utils.PrintString(16, 17, "End : Ctrl + x")
+			}
 			termbox.Flush()
 
 			time.Sleep(50 * time.Millisecond)
