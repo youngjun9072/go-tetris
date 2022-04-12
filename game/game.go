@@ -8,13 +8,13 @@ import (
 )
 
 var StartGame bool
-var score uint
-var lvl uint
+var Score uint
+var Level uint
 var KeyLock bool
 
 func InitGame() {
-	score = 0
-	lvl = 0
+	Score = 0
+	Level = 0
 	KeyLock = true
 	board.Init()
 	block.Init()
