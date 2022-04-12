@@ -152,6 +152,8 @@ func KeyHandler(ev termbox.Event, b *block.Block) bool {
 					}
 					board.PutOn(b)
 				}
+				b = nil
+				board.RemoveLines()
 			}
 			return true
 		}
